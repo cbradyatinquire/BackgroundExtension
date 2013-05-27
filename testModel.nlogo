@@ -1,9 +1,9 @@
 extensions [background]
 @#$#@#$#@
 GRAPHICS-WINDOW
-458
+822
 10
-897
+1261
 470
 16
 16
@@ -27,14 +27,30 @@ GRAPHICS-WINDOW
 ticks
 30.0
 
+BUTTON
+526
+227
+803
+260
+add non-stretchable background image
+background:add user-file false
+NIL
+1
+T
+OBSERVER
+NIL
+NIL
+NIL
+NIL
+1
 
 BUTTON
-10
-164
-272
-197
-NIL
-background:add user-file false
+28
+227
+274
+260
+add stretchable background image
+background:add user-file true
 NIL
 1
 T
@@ -388,7 +404,7 @@ Polygon -7500403 true true 270 75 225 30 30 225 75 270
 Polygon -7500403 true true 30 75 75 30 270 225 225 270
 
 @#$#@#$#@
-NetLogo 5.0.5
+NetLogo 5.0.3
 @#$#@#$#@
 @#$#@#$#@
 @#$#@#$#@

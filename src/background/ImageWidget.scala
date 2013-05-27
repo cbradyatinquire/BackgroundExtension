@@ -17,11 +17,11 @@ import java.io.File
  */
 class ImageWidget extends Widget {
 
-  setBackground(InterfaceColors.PLOT_BACKGROUND)
+  setBackground(InterfaceColors.TRANSPARENT)
 
-  val MIN_WIDTH = 50
+  val MIN_WIDTH = 10
   val DEFAULT_WIDTH = 100
-  val MIN_HEIGHT = 100
+  val MIN_HEIGHT = 10
   private var _width: Int = DEFAULT_WIDTH
 
   var scaleDraw = true
