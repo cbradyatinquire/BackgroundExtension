@@ -17,18 +17,16 @@ import java.io.File
  */
 class ImageWidget extends Widget {
 
-  setBackground(InterfaceColors.PLOT_BACKGROUND)
-
-  val MIN_WIDTH = 50
-  val DEFAULT_WIDTH = 100
-  val MIN_HEIGHT = 100
+  val MIN_WIDTH           = 10
+  val DEFAULT_WIDTH       = 100
+  val MIN_HEIGHT          = 10
   private var _width: Int = DEFAULT_WIDTH
 
-  var scaleDraw = true
+  var scaleDraw           = true
   private var bufferedImage: BufferedImage = null
 
+  setBackground(InterfaceColors.TRANSPARENT)
   override def widgetWrapperOpaque = ! transparency
-
   def transparency = getBackground eq InterfaceColors.TRANSPARENT
   def transparency(trans: Boolean) {
     setBackground(if (trans) InterfaceColors.TRANSPARENT else InterfaceColors.TEXT_BOX_BACKGROUND)
@@ -36,9 +34,7 @@ class ImageWidget extends Widget {
   }
 
   //don't load or save at the moment.
-  def save: String = {
-    ""
-  }
+  def save: String = { "" }
   def load(strings: Array[String], helper: LoadHelper): AnyRef = null
 
 
@@ -61,14 +57,14 @@ class ImageWidget extends Widget {
     super.setBounds(x, y, width, height)
   }
 
+  override def needsPreferredWidthFudgeFactor = false
   override def getMinimumSize = new Dimension(MIN_WIDTH, MIN_HEIGHT)
   override def getPreferredSize(font:Font): Dimension = {  //font is supplied, though we don't use it
     var height: Int = MIN_HEIGHT
     if (bufferedImage != null) {height = bufferedImage.getHeight}
     new Dimension(StrictMath.max(MIN_WIDTH, _width), height)
   }
-  override def needsPreferredWidthFudgeFactor = false
-
+  
   override def paintComponent(g: Graphics) {
     super.paintComponent(g)
     if (bufferedImage != null){
