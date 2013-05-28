@@ -29,37 +29,24 @@ class Background extends org.nlogo.api.DefaultClassManager {
       val stretch      = args(1).getBooleanValue
       val widgetPanel  = App.app.workspace.getWidgetContainer.asInstanceOf[WidgetPanel]
 
-      val methodArray     = Class.forName("org.nlogo.app.WidgetPanel").getDeclaredMethods
-      val addWidgetAsOpt  = methodArray.find( method => method.toString contains("addWidget") )
-      val addWidgetMethod = addWidgetAsOpt.getOrElse( throw new ExtensionException("Can't find the addWidget method") )
+      val methodArray  = Class.forName("org.nlogo.app.WidgetPanel").getDeclaredMethods
+      val methodOpt    = methodArray.find( method => method.toString contains("addWidget") )
+      val method       = methodOpt.getOrElse( throw new ExtensionException("Can't find the addWidget method") )
 
-      val imageWidget = new ImageWidget
-      try {
-        val imageFile = new java.io.File(filepath)
-        imageWidget.loadImage(imageFile)
-        imageWidget.setStretchable( stretch )
-        invokeLater( {
+      val imageFile    = new java.io.File(filepath)
+      val imageWidget  = new ImageWidget(stretch, imageFile)
 
-          addWidgetMethod.setAccessible(true)
-
-          val imageWidgetWrapper = addWidgetMethod.invoke(widgetPanel, imageWidget, new java.lang.Integer(10), new java.lang.Integer(10), new java.lang.Boolean(false), new java.lang.Boolean(false))
-
-          imageWidget.addMouseListener(new java.awt.event.MouseAdapter() {
-            override def mousePressed(e: event.MouseEvent) {
-              widgetPanel.mousePressed(e)
-            }
-          })
-
-          widgetPanel.moveToBack( imageWidgetWrapper.asInstanceOf[WidgetWrapper] )
-        } )
-      }
-      catch {
-        case e:Exception =>
-          throw new ExtensionException("Error in loading image file")
-          e.printStackTrace()
+      invokeLater{
+        method.setAccessible(true)
+        val imageWidgetWrapper = method.invoke(widgetPanel, imageWidget, Int.box(10), Int.box(10), Boolean.box(false), Boolean.box(false))
+        imageWidget.addMouseListener(new java.awt.event.MouseAdapter() {
+          override def mousePressed(e: event.MouseEvent) {
+            widgetPanel.mousePressed(e)
+          }
+        })
+        widgetPanel.moveToBack( imageWidgetWrapper.asInstanceOf[WidgetWrapper] )
       }
     }
-
   }
 
   def invokeLater(body: => Unit) {
